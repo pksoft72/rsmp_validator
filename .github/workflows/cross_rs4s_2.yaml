@@ -8,7 +8,6 @@ name: Cross RS4S
 on:
   pull_request:
     types: [ opened, reopened, synchronize, labeled ]
-  push:
   schedule:
     # schedule runs only on the default branch. time is in UTC.
     # * is a special character in YAML so you have to quote this string.
