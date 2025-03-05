@@ -43,15 +43,6 @@ module Validator::CommandHelpers
     send_command_and_confirm @task, command_list, "Order signal group #{indx} to red", component
   end
 
-  # Request series of signal groups to start/stop
-  def set_signal_start_or_stop status
-    command_list = build_command_list :M0012, :setStart, {
-      securityCode: Validator.get_config('secrets','security_codes',2),
-      status: status
-    }
-    send_command_and_confirm @task, command_list, "Request series of signal groups to #{status}"
-  end
-
   # Switch signal plan
   def set_plan plan
     require_security_codes
@@ -514,7 +505,7 @@ module Validator::CommandHelpers
   def verify_startup_sequence &block
     status_list = [{'sCI'=>'S0001','n'=>'signalgroupstatus'}]
     subscribe_list = convert_status_list(status_list).map { |item| item.merge 'uRt'=>0.to_s }
-    subscribe_list.map! { |item| item.merge!('sOc' => false) } if use_sOc?(@site)
+    subscribe_list.map! { |item| item.merge!('sOc' => true) } if use_sOc?(@site)
 
     unsubscribe_list = convert_status_list(status_list)
     component = Validator.get_config('main_component')
