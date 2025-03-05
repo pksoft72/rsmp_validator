@@ -48,20 +48,20 @@ module Validator::StatusHelpers
   end
 
   def wait_for_status parent_task, description, status_list,
-      update_rate: Validator.get_config('intervals','status_update', assume: 0),
-      timeout: Validator.get_config('timeouts','command')
-    update_rate = 0 unless update_rate
+      update_rate: 0,
+      timeout: Validator.get_config('timeouts','command'),
+      component_id: Validator.get_config('main_component') 
     log "Wait for #{description}"
     subscribe_list = convert_status_list(status_list).map { |item| item.merge 'uRt'=>update_rate.to_s }
-    subscribe_list.map! { |item| item.merge!('sOc' => false) } if use_sOc?(@site)
+    subscribe_list.map! { |item| item.merge!('sOc' => true) } if use_sOc?(@site)
 
     begin
-      result = @site.subscribe_to_status Validator.get_config('main_component'), subscribe_list, collect!: {
+      result = @site.subscribe_to_status component_id, subscribe_list, collect!: {
         timeout: timeout
       }
     ensure
       unsubscribe_list = convert_status_list(status_list).map { |item| item.slice('sCI','n') }
-      @site.unsubscribe_to_status Validator.get_config('main_component'), unsubscribe_list
+      @site.unsubscribe_to_status component_id, unsubscribe_list
     end
   end
 
@@ -70,7 +70,6 @@ module Validator::StatusHelpers
     wait_for_status(@task,
       "Wait for all groups to go to yellow flash",
       [{'sCI'=>'S0001','n'=>'signalgroupstatus','s'=>regex}],
-      update_rate: 0,
       timeout: timeout
     )
   end
