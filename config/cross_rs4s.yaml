@@ -7,7 +7,7 @@ intervals:
   timer: 1
   watchdog: 60
 timeouts:
-  watchdog: 65
+  watchdog: 10
   acknowledgement: 5
   connect: 30
   ready: 1
