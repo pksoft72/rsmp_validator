@@ -7,4 +7,5 @@
 # are initiated by the supervisor, only a limited set of tests can be automated by the validator.
 
 RSpec.describe 'Supervisor' do
+  # This group is intentionally empty, but exist so for YARD documentation generation purposes.
 end

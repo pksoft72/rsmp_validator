@@ -13,10 +13,10 @@ nav_order: 5
 When you run tests, RSpec will report the results.
 RSpec has several build-in report formats, including `progress`, `documentation`, `html` and `json`. RSMP Validator comes with two additional formats, called `Brief` and `Details`.
 
-See the [RSpec docs](https://relishapp.com/rspec/rspec-core/v/2-6/docs/command-line/format-option) for more info about formatters.
+See the [RSpec docs](https://rspec.info/documentation/3.12/rspec-core/RSpec/Core/Formatters.html) for more info about formatters.
 
 ## Brief format
-The `Brief` format is similar to the build-in `documentation` format. It show one line per test, colored according to the test result. But unlike `documentation`, it will include a bit of information about each failing tests directly in the progress overview:
+The `Brief` format is similar to the built-in `documentation` format. It shows one line per test, colored according to the test result. But unlike `documentation`, it will include a bit of information about each failing test directly in the progress overview:
 
 ```
 Traffic Light Controller
@@ -28,7 +28,7 @@ Traffic Light Controller
 ```
 
 ## Detailed format
-The `Details` format show a more detailed log of the steps each test performs  as well as all RSMP messages exchanged, with timestamp, port number, etc.
+The `Details` format shows a more detailed log of the steps each test performs as well as all RSMP messages exchanged, with timestamp, port number, etc.
 
 ```
 Traffic Light Controller / Clock / can be read with S0096
@@ -38,6 +38,8 @@ Traffic Light Controller / Clock / can be read with S0096
     2021-07-07T13:08:49.427Z 53786    RN+SI0001     5087  Received Version message for site RN+SI0001 {"mType":"rSMsg","type":"Version","RSMP":[{"vers":"3.1.1"},{"vers":"3.1.2"},{"vers":"3.1.3"},{"vers":"3.1.4"},{"vers":"3.1.5"}],"siteId":[{"sId":"RN+SI0001"}],"SXL":"1.0.15","mId":"50871bcb-57c2-430d-ab0f-49077823d0ac"}
     2021-07-07T13:08:49.457Z 53786    RN+SI0001           Sent MessageAck for Version 5087 {"mType":"rSMsg","type":"MessageAck","oMId":"50871bcb-57c2-430d-ab0f-49077823d0ac"}
 ```
+
+When using the auto node feature, both the validator and auto node output will use the same formatter, with output interleaved and formatted consistently. Use the `prefix` log option in the auto node config to distinguish between sources.
 
 ## Sentinel Warnings
 Sometimes invalid messages are received that are not directly related to the currently executing test. For example, alarms or statuses can be received at any time. If such messages do not conform to the RSMP JSON schema, a sentinel warning will be recorded.
@@ -80,6 +82,8 @@ For example, you can show the brief format in the console, and also direct the d
 ```
 % bundle exec rspec spec/site --format Validator::Brief --format Validator::Details --out log/validation.log
 ```
+
+When using the auto node feature with interleaved output (default), both validator and auto node logs will go through all configured formatters. If the auto node is configured with `path` in its log settings, its output will be written to that file independently of the RSpec formatters.
 
 ## Default output formats
 You can set default options for the rspec command by adding them to the file `.rspec-local`. For example, if you want to show the brief format in the console by default, while directing the detailed log to a file::
