@@ -6,6 +6,7 @@ sxl_version: '1.2.1'
 intervals:
   timer: 1
   watchdog: 60
+  status_update: 1
 timeouts:
   watchdog: 65
   acknowledgement: 5
