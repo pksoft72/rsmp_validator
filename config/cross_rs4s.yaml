@@ -15,6 +15,7 @@ local_supervisor:
       intervals:
         timer: 1
         watchdog: 60
+        status_update: 1 # Without this subscription don't work: "It is not valid to set updateRate=0 and sendOnChange=false since it means that no subscription updates will be sent."
 sxls:
   tlc: '1.2.1'
 timeouts:
