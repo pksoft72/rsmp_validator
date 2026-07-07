@@ -1,16 +1,16 @@
 source 'https://rubygems.org'
 
-gem 'rsmp'
+gemspec
 
+# runtime dependencies
 gem 'activesupport'
+gem 'colorize'
+gem 'rsmp'
+gem 'sus'
+gem 'sus-fixtures-async'
+gem 'thor'
 
 group :development do
   gem 'rake'
-  gem 'rspec'
   gem 'rubocop'
-  gem 'rubocop-rspec'
-end
-
-group :development, :documentation do
-  gem 'yard'
 end

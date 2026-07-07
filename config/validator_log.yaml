@@ -1,0 +1,19 @@
+prefix: '[VALIDATOR] '
+style:
+  warning:
+    color: yellow
+    mode: bold
+  info:
+    color: magenta
+    mode: bold
+  log:
+    color: magenta
+  debug:
+    color: magenta
+  collect:
+    color: magenta
+port: true
+json: true
+acknowledgements: true
+watchdogs: true
+debug: false

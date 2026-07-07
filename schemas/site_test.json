@@ -11,13 +11,10 @@
       "additionalProperties": true
     },
     "core_version": { "type": "string" },
-    "sxl": { "type": "string" },
-    "sxl_version": { "type": "string" },
-    "rsmp_versions": {
-      "oneOf": [
-        { "type": "string" },
-        { "type": "array", "items": { "type": "string" } }
-      ]
+    "sxls": {
+      "type": "object",
+      "propertyNames": { "not": { "const": "core" } },
+      "additionalProperties": { "type": "string" }
     },
     "timeouts": { "type": "object" },
     "components": { "type": "object" },

@@ -1,0 +1,17 @@
+style:
+  warning:
+    color: yellow
+  info:
+    color: white
+  log:
+    color: grey
+  debug:
+    color: grey
+  collect:
+    color: cyan
+    mode: dim
+port: true
+json: true
+acknowledgements: false
+watchdogs: false
+debug: false

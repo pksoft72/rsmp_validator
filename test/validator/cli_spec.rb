@@ -1,0 +1,68 @@
+require 'stringio'
+require_relative '../../lib/rsmp/validator/cli/entrypoint'
+
+ValidatorCliResult = Struct.new(:status, :output, :error, keyword_init: true)
+
+describe 'Validator CLI' do
+  def invoke_cli(*args)
+    stdout = StringIO.new
+    stderr = StringIO.new
+    old_stdout = $stdout
+    old_stderr = $stderr
+    $stdout = stdout
+    $stderr = stderr
+    status = 0
+
+    begin
+      RSMP::Validator::CLI.start(args.flatten)
+    rescue SystemExit => e
+      status = e.status
+    ensure
+      $stdout = old_stdout
+      $stderr = old_stderr
+    end
+
+    ValidatorCliResult.new(status: status, output: stdout.string, error: stderr.string)
+  end
+
+  it 'shows run and config commands in help' do
+    result = invoke_cli('help')
+
+    expect(result.status).to be(:zero?)
+    expect(result.output).to be(:include?, 'run PATH')
+    expect(result.output).to be(:include?, 'config COMMAND')
+  end
+
+  it 'rejects ambiguous log destinations' do
+    result = invoke_cli('run', 'test/validator/options_spec.rb', '--log', '--log-path', 'tmp/rsmp.log')
+
+    expect(result.status).to be == 1
+    expect(result.error).to be(:include?, '--log and --log-path cannot be used together')
+  end
+
+  it 'requires the run command before test paths' do
+    result = invoke_cli('test/validator/options_spec.rb')
+
+    expect(result.status).to be == 1
+    expect(result.error).to be(:include?, 'Could not find command')
+  end
+
+  it 'parses run options after paths' do
+    result = RSMP::Validator::RunOptions.parse(
+      [
+        'test/site',
+        '--core', '3.3.0',
+        '--sxls=tlc:1.3.0,vms:1.0.0',
+        '--site-config', 'config/gem_tlc.yaml',
+        '--auto-site-config=config/simulator/tlc.yaml'
+      ],
+      thor_options: {}
+    )
+
+    expect(result[:paths]).to be == ['test/site']
+    expect(result[:core_version]).to be == '3.3.0'
+    expect(result[:sxls]).to be == 'tlc:1.3.0,vms:1.0.0'
+    expect(result[:site_config_path]).to be == 'config/gem_tlc.yaml'
+    expect(result[:auto_site_config_path]).to be == 'config/simulator/tlc.yaml'
+  end
+end

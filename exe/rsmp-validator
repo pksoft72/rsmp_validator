@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/rsmp/validator/cli/entrypoint'
+
+RSMP::Validator::CLI.start(ARGV)

@@ -1,15 +1,22 @@
 # Config for testing Swarco ITC-3 traffic light controller.
 # The settings are used for starting a local supervisor listening for the site tested
 # See https://rsmp-nordic.github.io/rsmp_validator/config/
+compliance:
+  id: swarco-itc3
+  kind: site
+  name: Swarco ITC-3
+  product_url: https://www.swarco.com/products/traffic-light-controllers/itc-3-traffic-controller
+
 local_supervisor:
   ips: all
   max_sites: 1
-  guest:
-    intervals:   
-      timer: 1    # main validator timer resolution in seconds
-      watchdog: 20 # send watchdog every x seconds
-sxl: tlc
-sxl_version: '1.0.15'
+  sites:
+    default:
+      intervals:
+        timer: 1    # main validator timer resolution in seconds
+        watchdog: 20 # send watchdog every x seconds
+sxls:
+  tlc: '1.0.15'
 timeouts:     # Timeouts used when waiting for messages from site.
   watchdog: 60
   acknowledgement: 60
@@ -50,5 +57,5 @@ alarm_triggers:
     component: AA+BBCCC=DDDDL002
 secrets:
   security_codes:
-    1: default
-    2: default
+    1: 'default'
+    2: 'default'

@@ -1,20 +1,23 @@
 # Config for testing RSMP Nordic traffic light controller emulator.
 # The settings are used for starting a local supervisor listening for the site tested
 # See https://rsmp-nordic.github.io/rsmp_validator/config/
+compliance:
+  id: gem-tlc
+  kind: site
+  name: RSMP Nordic CLI TLC
+  product_url: https://github.com/rsmp-nordic/rsmp
+
 local_supervisor:
   port: 13111
   ips: all
   max_sites: 1
-  log:
-    prefix: '[SUPERVISOR]'
-    acknowledgements: false
-    watchdogs: false
-  guest:
+  proxy_type: tlc
+  default:
     intervals:
       timer: 0.1
       watchdog: 0.1
-sxl: tlc
-sxl_version: '1.2.1'
+sxls:
+  tlc: '1.2.1'
 timeouts:
   watchdog: 1
   acknowledgement: 1

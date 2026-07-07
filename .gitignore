@@ -1,15 +1,12 @@
 log
-.rspec_status
-.rspec-local
 config/*secrets.yaml
 !config/secrets_example.yaml
 config/validator.yaml
 config/private/
 /.bundle/
-/.yardoc
 /coverage/
 /pkg/
-/spec/reports/
+/test/reports/
 /tmp/
 /ignore/
 /docs/dev/

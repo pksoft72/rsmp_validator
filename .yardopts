@@ -1,6 +1,0 @@
--e yard/extensions.rb
--o docs/dev
-
-spec/site
-spec/supervisor
-spec/support/

@@ -1,4 +1,4 @@
-# This workflow will rebuild YARD docs and update the gh-pages branch.
+# This workflow will rebuild docs and update the gh-pages branch.
 
 name: Build Documentation
 
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Rebuild YARD docs and update the gh-pages branch
+    name: Rebuild docs and update the gh-pages branch
     runs-on: ubuntu-latest
 
     steps:
@@ -19,14 +19,12 @@ jobs:
         run: echo "The branch name is $BRANCH_NAME"
 
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Install Ruby and Gems
         uses: ruby/setup-ruby@v1
-        env:
-          BUNDLE_WITH: documentation
         with:
           bundler-cache: true   # runs 'bundle install' and caches installed gems automatically
 
@@ -35,11 +33,8 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "<>"
 
-      - name: Update YARD html
-        run: bundle exec yardoc --output docs/dev
-
-      - name: Update YARD markdown
-        run: bundle exec yardoc --template jekyll --format markdown --output docs/tests
+      - name: Generate test documentation
+        run: bundle exec rake spec_docs
 
       - name: Commit to local branch
         run: |

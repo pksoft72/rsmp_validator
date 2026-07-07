@@ -2,17 +2,19 @@
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-# This workflow will run rspec
-
+# This workflow will run rsmp validator
 name: Gem supervisor
-on: push
+on:
+  push:
+  schedule:
+    - cron: '0 22 * * *'
 jobs:
   validator:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        core: ['3.2.2', '3.2.1', '3.2.0', '3.1.5', '3.1.4', '3.1.3', '3.1.2']
+        core: ['3.3.0', '3.2.2', '3.2.1', '3.2.0', '3.1.5', '3.1.4', '3.1.3', '3.1.2']
       fail-fast: false
 
     steps:
@@ -21,8 +23,7 @@ jobs:
       id: log_id
       run: |
         echo "LOG_ID=\
-        gem-supervisor-\
-        ubuntu-latest-\
+        gem-supervisor-ubuntu-latest-\
         core-${{ matrix.core }}-\
         run-\
         ${{ github.run_id }}-\
@@ -31,48 +32,52 @@ jobs:
         " >> $GITHUB_OUTPUT
 
     - name: Checkout repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Install Ruby and gems
       uses: ruby/setup-ruby@v1
       with:
-        # ruby-version is not needed because we have a .tool-versions file
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+        bundler-cache: true
 
     - name: Start supervisor in background
       shell: bash
       run: |
-        bundle exec rsmp supervisor \
-        --config config/simulator/supervisor.yaml \
+        bundle exec rsmp supervisor --config config/simulator/supervisor.yaml \
         2>&1 > simulator-${{ steps.log_id.outputs.LOG_ID }}.log \
         &
 
     - name: Run tests
       shell: bash
       run: |
-        bundle exec rspec spec/supervisor \
-        --format Validator::Brief \
-        --format Validator::Details \
-        --out validator-${{ steps.log_id.outputs.LOG_ID }}.log
-      env:
-        SUPERVISOR_CONFIG: config/gem_supervisor.yaml
-        CORE_VERSION: ${{ matrix.core}}
+        bundle exec rsmp-validator run test/supervisor \
+        --verbose --log-path validator-${{ steps.log_id.outputs.LOG_ID }}.log \
+        --report-json compliance-${{ steps.log_id.outputs.LOG_ID }}.json \
+        --supervisor-config config/gem_supervisor.yaml \
+        --core ${{ matrix.core}}
 
     - name: Show detailed log
       shell: bash
-      if: always() # even if previous steps failed
+      if: always()
       run: cat validator-${{ steps.log_id.outputs.LOG_ID }}.log
-    
+
     - name: Upload validator.log
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: validator-${{ steps.log_id.outputs.LOG_ID }}.log
         path: validator-${{ steps.log_id.outputs.LOG_ID }}.log
-    
+
+    - name: Upload compliance result
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: compliance-${{ steps.log_id.outputs.LOG_ID }}.json
+        path: compliance-${{ steps.log_id.outputs.LOG_ID }}.json
+        if-no-files-found: warn
+
     - name: Upload simulator.log
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: simulator-${{ steps.log_id.outputs.LOG_ID }}.log
         path: simulator-${{ steps.log_id.outputs.LOG_ID }}.log

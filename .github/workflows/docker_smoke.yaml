@@ -1,0 +1,30 @@
+# This workflow verifies that the Docker image builds and can run the validator.
+
+name: Docker Smoke
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  docker-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Build Docker image
+      run: docker build -t rsmp-validator:smoke .
+
+    - name: Check CLI help
+      run: docker run --rm rsmp-validator:smoke --help
+
+    - name: Run validator smoke test
+      run: |
+        docker run --rm \
+          rsmp-validator:smoke \
+          run test/site/core/connect_spec.rb --verbose \
+          --site-config config/gem_tlc.yaml \
+          --auto-site-config config/simulator/tlc.yaml \
+          --core 3.3.0
