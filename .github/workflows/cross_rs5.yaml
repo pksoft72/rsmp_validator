@@ -29,7 +29,7 @@ jobs:
       id: log_id
       run: |
         echo "LOG_ID=\
-        cross-rs4s-\
+        cross-rs5-\
         core-${{ matrix.core }}-\
         run-\
         ${{ github.run_id }}-\
@@ -51,7 +51,7 @@ jobs:
         bundle exec rsmp-validator run test/site \
         --verbose --log-path validator-${{ steps.log_id.outputs.LOG_ID }}.log \
         --report-json compliance-${{ steps.log_id.outputs.LOG_ID }}.json \
-        --site-config config/cross_rs4s.yaml \
+        --site-config config/cross_rs5.yaml \
         --core ${{ matrix.core}}
 
     - name: Show detailed log
