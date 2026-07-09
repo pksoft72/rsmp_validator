@@ -5,6 +5,7 @@
 # This workflow will run rsmp validator
 name: Cross RS5
 on:
+  push:
   pull_request:
     types: [ opened, reopened, synchronize, labeled ]
   schedule:
