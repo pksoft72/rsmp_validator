@@ -5,6 +5,7 @@
 # This workflow will run rsmp validator
 name: Cross RS4S
 on:
+  push:
   pull_request:
     types: [ opened, reopened, synchronize, labeled ]
   schedule:
@@ -14,7 +15,7 @@ on:
     - cron: '0 22 * * *'
 jobs:
   validator:
-    if: ${{ github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'testhub') }}
+    #if: ${{ github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'testhub') }}
     runs-on: [ self-hosted, Linux, X64, cross-rs4s ]
     strategy:
       matrix:
