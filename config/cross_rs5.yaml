@@ -36,15 +36,15 @@ timeouts:
   yellow_flash: 2
 components:
   main:
-    CZ+76000=101TC001:
+    CZ+77000=101TC001:
   signal_group:
-    CZ+76000=101SG001:
-    CZ+76000=101SG002:
-    CZ+76000=101SG003:
+    CZ+77000=101SG001:
+    CZ+77000=101SG002:
+    CZ+77000=101SG003:
   detector_logic:
-    CZ+76000=101DL001:
-    CZ+76000=101DL002:
-    CZ+76000=101DL003:
+    CZ+77000=101DL001:
+    CZ+77000=101DL002:
+    CZ+77000=101DL003:
 items:
   plans: [1,2]  #switching to each plan takes a lot of time
   traffic_situations: [1,2,3]
@@ -55,7 +55,7 @@ startup_sequence: 'efg'
 alarm_triggers:
   A0302:
     input: 7
-    component: CZ+76000=101DL001
+    component: CZ+77000=101DL001
 secrets:
   security_codes:
     1: '1111'
