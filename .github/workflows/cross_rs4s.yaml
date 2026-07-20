@@ -47,12 +47,9 @@ jobs:
 
     - name: Run tests
       shell: bash
-#        --format Validator::Brief \
-#        --format Validator::Details \
       run: |
         bundle exec rsmp-validator run test/site \
         --verbose \
-        --format Validator::Details \
         --log-path validator-${{ steps.log_id.outputs.LOG_ID }}.log \
         --report-json compliance-${{ steps.log_id.outputs.LOG_ID }}.json \
         --site-config config/cross_rs4s.yaml \
