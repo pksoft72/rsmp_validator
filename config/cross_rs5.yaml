@@ -29,7 +29,7 @@ timeouts:
   command: 300
   command_response: 30
   alarm: 15
-  disconnect: 20
+  disconnect: 21
   startup_sequence: 45
   functional_position: 60
   priority_completion: 15
