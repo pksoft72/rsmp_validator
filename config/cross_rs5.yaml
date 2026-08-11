@@ -14,7 +14,7 @@ local_supervisor:
   sites:
     default:
       intervals:
-        timer: 1
+        timer: 10
         watchdog: 60
 sxls:
   tlc: '1.2.1'
@@ -22,7 +22,7 @@ timeouts:
   watchdog: 65
   acknowledgement: 5
   connect: 30
-  ready: 1
+  ready: 10
   status_response: 10
   status_update: 1 # Without this subscription don't work: "It is not valid to set updateRate=0 and sendOnChange=false since it means that no subscription updates will be sent."
   subscribe: 1
