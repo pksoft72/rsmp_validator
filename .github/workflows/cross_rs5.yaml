@@ -47,8 +47,6 @@ jobs:
 
     - name: Run tests
       shell: bash
-#        --format Validator::Brief
-#        --format Validator::Details
       run: |
         bundle exec rsmp-validator run test/site \
         --verbose \
