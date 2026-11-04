@@ -6,14 +6,9 @@
 name: Cross RS5
 on:
   push:
-  pull_request:
-    types: [ opened, reopened, synchronize, labeled ]
-  schedule:
-    - cron: '0 23 * * *'
 jobs:
   validator:
-    #if: ${{ github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'testhub') }}
-    runs-on: [ self-hosted, Linux, X64, cross-rs5 ]
+    runs-on: [ self-hosted, Linux, X64, cross-rs5-test ]
     strategy:
       matrix:
         core: ['3.2.0']
