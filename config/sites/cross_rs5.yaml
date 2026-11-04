@@ -16,6 +16,7 @@ local_supervisor:
       intervals:
         timer: 1
         watchdog: 60
+        
 sxls:
   tlc: '1.2.1'
 timeouts:
